@@ -3,6 +3,13 @@ Temperature monitoring of PCB components using ultrasonic guided waves and machi
 
 This repository contains the raw data and associated python scripts to predict the temperature of PCB components from ultrasonic guided wave signals. The process is demonstrated on three different PCBs, each with five hotspot positions (temperature controlled resistors). 
 
+Setup the virtual environment in VSCode:
+- open a terminal window
+- cd into the repository folder
+- create the virtual environment with this command: `py -3.12 -m venv .venv`
+- activate it with this command: `.venv/scripts/activate`
+- Install the required packages with `pip install -r requirements.txt`
+
 The first stage of the processing takes the raw data ("Waveforms" folder), combines it with traditional temperature monitoring data from thermocouples/IR cameras (for model training/validation), and then generates a selection of features from the receiver waveforms. These features are then stored in a `.csv` file for the ML stage. 
 
 The data from PCB's #1 & #3 are stored in the same way, one set of signals (1x excitation signal, 2x receivers) are stored in a `.csv` file per trigger/capture. The data from PCB #2 is stored differently, each folder contains 64 signals (the buffer size of the DAQ), which are averaged before features are calculated. The function for reading in signals should be changed accordingly, `func_read_signals` or `func_read_signals_average`.
@@ -23,7 +30,7 @@ Processing stages of `PCB_ML_main.py`:
 5. Plot temperature over time to visualise the experimental process.
 
 Functions:
- - `process_features` reads in raw data, combines with temperature
+ - `process_data` reads in raw data, combines with temperature
    measurements, and generates features. 
  - `test_processing.py` to see how
    peaks are found, bins are split, and FFT is calculated on a single
