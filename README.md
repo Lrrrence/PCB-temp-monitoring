@@ -2,7 +2,8 @@
 
 This repository contains the raw data and associated python scripts to predict the temperature of PCB components from ultrasonic guided wave signals. The process is demonstrated on three different PCBs, each with five hotspot positions (temperature controlled resistors). 
 
-Setup the virtual environment in VSCode:
+## Setup the virtual environment in VSCode
+
 - install python 3.12
 - clone the repo and open the folder in VSCode
 - open a terminal window
@@ -10,11 +11,24 @@ Setup the virtual environment in VSCode:
 - activate it with: `.venv/scripts/activate`
 - install the required packages with: `pip install -r requirements.txt`
 
+## Processing
+
 The first stage of the processing (`process_data.py`) takes the raw data ("Waveforms" folder), combines it with traditional temperature monitoring data from thermocouples/IR cameras (for model training/validation), and then generates a selection of features from the receiver waveforms. These features are then stored in a `.csv` file for the ML stage. 
 
-The data from PCB's #1 & #3 are stored in the same way, one set of signals (1x excitation signal, 2x receivers) are stored in a `.csv` file per trigger/capture. The data from PCB #2 is stored differently, each folder contains 64 signals (the buffer size of the DAQ), which are averaged before features are calculated. The function for reading in signals should be changed accordingly, `func_read_signals` or `func_read_signals_average`.
+There are three test PCBs:
+- PCB#1
+    - One receiver, five spread out resistor hotspots.
+    - Two datasets, `single` and `avg`.
+        - `single` contains one capture per trigger.
+        - `avg` contains 64 captures (buffer size of DAQ) per trigger.  
+- PCB#2
+    - Two receivers, five inline resistor hotspots.
+    - One dataset, `avg`.
+- PCB#3
+    - Two receivers, five hotspots applied externally via resistors to board ICs.
+    - One dataset, `single`.
 
-PCB#1 has 1x receiver, PCB#2/3 have 2x receivers.
+The function for reading in signals is changed automatically, depending on the type. `func_read_signals` or `func_read_signals_average`.
 
 Within each data folder there is a `temp_log.txt` file which contains the temperature of each component (as measured by thermocouple or IR camera). This file is read in to `PCB_ML_main.py` and used at around line 74, where the closest measurement by timestamp from `temp_log.txt` is matched up and stored with the signal data. Temp 1-5 are the component temperatures, temp 6 is the minimum temperature of the board (not used).
 
@@ -29,7 +43,8 @@ Processing stages of `process_data.py`:
 4. Export the final dataset.
 5. Plot temperature over time to visualise the experimental process.
 
-Functions:
+## Functions
+
  - `process_data.py` reads in raw data, combines with temperature
    measurements, and generates features. 
  - `test_processing.py` to see how
