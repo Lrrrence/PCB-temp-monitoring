@@ -12,7 +12,7 @@ import matplotlib.pyplot as plt
 import os
 
 # Define the folder path where the file is located
-folder_path = os.path.join(os.path.dirname(__file__), "Data", "PCB#1", "single")
+folder_path = os.path.join(os.path.dirname(__file__), "Data", "PCB#3", "single")
 
 # Find any file that has 'features.csv' in the name in the specified folder
 for file in os.listdir(folder_path):
@@ -31,7 +31,6 @@ features_df = pd.read_csv(path)
 # extract target variables
 y_clf = features_df['hotspot_num']
 y_reg = features_df[['temp 1', 'temp 2', 'temp 3', 'temp 4', 'temp 5']]
-#y_reg = features_df[['Temp Point 1', 'Temp Point 2', 'Temp Point 3', 'Temp Point 4', 'Temp Point 5']]
 
 # select columns to drop
 dropped_columns = [col for col in features_df.columns if 'temp' in col.lower()] + ['hotspot_num', 'time_stamp', 'Filename', 'ch_num']
@@ -254,7 +253,7 @@ for i in range(num_columns):
     
     # Save each plot with model name and column index in the filename
     plot_filename = os.path.join(folder_path, f'regression_{best_model_name}_hotspot_{i+1}.pdf')
-    #plt.savefig(plot_filename)
+    plt.savefig(plot_filename)
     plt.show(block=False)
 
 # %%

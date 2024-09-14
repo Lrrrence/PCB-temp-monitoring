@@ -15,9 +15,6 @@ import seaborn as sns
 import os
 
 # Define the folder path where the file is located
-file = r"C:\Users\yulel\Documents\Waveforms\Set 6 (PCB#4)\20240705 (5).txt"
-
-# Define the folder path where the file is located
 folder_path = os.path.join(os.path.dirname(__file__), "Waveforms", "PCB#1", "single")
 
 # Get the first .txt file in the folder
