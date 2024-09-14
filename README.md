@@ -6,6 +6,8 @@ This repository contains the raw data and associated python scripts to predict t
 
 An arbitrary waveform generator (GW Instek MFG-2230M) is used to generate a 300 kHz, five-cycle Hann windowed pulse, internally triggered at a rate of 100 ms. A Picoscope 3406D MSO USB oscilloscope is used to digitise the signals, at a sampling rate of 5 MHz. Signals are captured on a trigger from the excitation pulse, 200 μs with a 5% pre-trigger. A high-pass filter is used to remove any DC offset. The temperature of the components and the boards themselves are monitored using an infrared camera (Xinfrared T2S Plus), placing measurement points at the centre of each hotspot position.
 
+A large number of features are calculated from each signal, which can be split into three sections, overall features, binned features, and peak amplitudes. The overall features are made up of the mean, standard deviation, skewness, kurtosis, median, min, max, range, sum, and variance. These features are then calculated for different parts of the signal, after splitting into ten equally spaced bins. Finally, the envelope of the original signal is calculated, and the amplitude of the five most prominent peaks are measured.
+
 All data processing is carried out in python, as described below. 
 
 ## Setup the virtual environment in VSCode
