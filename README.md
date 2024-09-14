@@ -34,11 +34,11 @@ Within each data folder there is a `temp_log.txt` file which contains the temper
 
 Processing stages of `process_data.py`:
 1. Import dependencies and set file paths.
-2. Choose number of receivers and methdo fo reading signals.
+2. Choose number of receivers.
 3. Loop by `ch_num`:
     1. Plot the first signal to check it's as expected.
     2. Calculate features using `calculate_features`, where the number of bins and peaks can be set.
-    3. Extracting hotspot number and temperature from `temp_log.txt`.
+    3. Extract hotspot number and temperature from `temp_log.txt`.
     4. Combine temperature measurements with calculated features.
 4. Export the final dataset.
 5. Plot temperature over time to visualise the experimental process.
