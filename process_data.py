@@ -14,7 +14,7 @@ def get_last_modified_time(file_path):
     return datetime.fromtimestamp(Path(file_path).stat().st_mtime)
 
 # Define the folder path where the file is located
-folder_path = os.path.join(os.path.dirname(__file__), "Waveforms", "PCB#1", "avg")
+folder_path = os.path.join(os.path.dirname(__file__), "Waveforms", "PCB#3", "single")
 
 # Define the file path for temp_log
 templog_path = os.path.join(folder_path, "temp_log.txt")
@@ -42,7 +42,7 @@ from Functions.func_calc_features import calculate_features
 # 2 = recA, 3 = recB
 
 # Define the folder path and channel numbers
-ch_nums = [2]  # Define the channel numbers
+ch_nums = [2,3]  # Define the channel numbers
 
 # Create an empty dict to store dfs
 all_features_dfs = {}
@@ -152,32 +152,31 @@ if 'temp 6' in all_features_df.columns:
     all_features_df.drop('temp 6', axis=1, inplace=True)
 
 #%%##################### PLOT MEASUREMENT TEMPERATURES ######################
+if "single" in folder_path.lower():
+    # Get unique values in 'hotspot_num'
+    hotspot_values = all_features_df['hotspot_num'].unique()
 
-# Get unique values in 'hotspot_num'
-hotspot_values = all_features_df['hotspot_num'].unique()
+    # Filter columns that contain the word 'temp' and convert them to float
+    temp_df = all_features_df.filter(regex='[Tt]emp').astype(float)
+    time_stamps = pd.to_datetime(all_features_df['time_stamp'])
 
-# Filter columns that contain the word 'temp' and convert them to float
-temp_df = all_features_df.filter(regex='[Tt]emp').astype(float)
-time_stamps = pd.to_datetime(all_features_df['time_stamp'])
+    # Define the filename
+    filename = os.path.join(export_path, "temperature of signals.pdf")
 
-# Define the filename
-filename = os.path.join(export_path, "temperature of signals.pdf")
+    # Plot
+    plt.figure(figsize=(8, 6))
+    for col in temp_df.columns:
+        plt.scatter(time_stamps, temp_df[col], s=10, label=f'{col}')
 
-# Plot
-plt.figure(figsize=(8, 6))
-for col in temp_df.columns:
-    plt.scatter(time_stamps, temp_df[col], s=10, label=f'{col}')
-
-plt.xlabel('Time of Day')
-plt.ylabel('Temperature')
-plt.title('Temperature of signals')
-plt.gca().xaxis.set_major_formatter(plt.matplotlib.dates.DateFormatter('%H:%M'))  # Format x-axis ticks to show only time
-plt.grid(True, linestyle='--')
-plt.legend(markerscale=5)
-plt.tight_layout()
-plt.savefig(filename)
-
-plt.show()
+    plt.xlabel('Time of Day')
+    plt.ylabel('Temperature')
+    plt.title('Temperature of signals')
+    plt.gca().xaxis.set_major_formatter(plt.matplotlib.dates.DateFormatter('%H:%M'))  # Format x-axis ticks to show only time
+    plt.grid(True, linestyle='--')
+    plt.legend(markerscale=5)
+    plt.tight_layout()
+    plt.savefig(filename)
+    plt.show()
 
 #%% ################# SAVE FEATURES ##########################
 

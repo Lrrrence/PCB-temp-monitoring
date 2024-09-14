@@ -1,3 +1,0 @@
-Time	Channel B	Channel C
-(us)	(mV)	(mV)
-

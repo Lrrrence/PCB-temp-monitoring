@@ -5,39 +5,26 @@ Created on Wed Apr  3 11:52:33 2024
 @author: Lrrr
 """
 
+
+
 def read_signals_single(folder_path, ch_num):
 
     import pandas as pd
     import numpy as np
     import os
     
-    def read_txt_files(folder_path):
-        txt_files = []
-        for root, dirs, files in os.walk(folder_path):
-            for file in files:
-                if file.endswith(".txt"):
-                    file_path = os.path.join(root, file)
-                    txt_files.append(file_path)
-        return txt_files
-    
-    def get_ctime(file_path):
-        # Get creation time in nanoseconds
-        ctime = os.stat(file_path).st_ctime
-        return ctime
-    
-    # Read all .txt files within the folder and its subfolders
-    txt_files = read_txt_files(folder_path)
-    
-    # Sort the list of files by datetime modified
-    txt_files.sort(key=lambda x: get_ctime(x))
-    
+    #folder_path = os.path.join(os.path.dirname(__file__), "Waveforms", "PCB#3", "single")
+
+    txt_files = [os.path.join(folder_path, f) for f in os.listdir(folder_path)]
+    txt_files.sort(key=lambda x: os.path.getctime(x))
+       
     #remove temp_log
     txt_files = list(filter(lambda x: "temp_log.txt" not in x and "DataLogSession" not in x and "CombinedDataLog" not in x, txt_files))
           
     ########## calculate sample rate ###############
     
     # Read the first file into a DataFrame
-    df = pd.read_csv(txt_files[0], delimiter='\t', header=1)
+    df = pd.read_csv(os.path.join(folder_path, txt_files[0]), delimiter='\t', header=1)
     # Convert entire DataFrame to numeric
     df = df.apply(pd.to_numeric)
     time = df.iloc[:, 0].values
@@ -46,6 +33,8 @@ def read_signals_single(folder_path, ch_num):
     # Calculate the sample rate
     fs = (1 / time_difference) * 1e6
     print("Sample Rate: {:.2f}".format(fs))
+
+    rec = df.iloc[:, ch_num].values
     
     ################ high pass filter #############
     
@@ -80,7 +69,7 @@ def read_signals_single(folder_path, ch_num):
     # Loop through each file, extract and store data, filename, and last modified time
     for file in txt_files:
         # Extract filename
-        filename = file.split('\\')[-1].split('Waveforms\\')[-1].replace('.txt', '')
+        filename = file.split('\\')[-1].split('Single\\')[-1].replace('.txt', '')
         
         # Get creation time 
         creation_time = os.stat(file).st_mtime
@@ -107,6 +96,12 @@ def read_signals_single(folder_path, ch_num):
 
         time = df.iloc[:, 0].values
         rec = df.iloc[:, ch_num].values
+
+        # Check if the length of rec is greater than padlen
+        padlen = max(len(b), len(a)) * 3  # Default padlen is 3 times the filter length
+        if len(rec) <= padlen:
+            print(f"Skipping file {file} due to insufficient data length for filtering")
+            continue
         
         # Apply high-pass filter
         rec = signal.filtfilt(b, a, rec)
