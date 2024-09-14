@@ -1,6 +1,12 @@
 # PCB temperature monitoring using ultrasonic guided waves and machine learning
 
-This repository contains the raw data and associated python scripts to predict the temperature of PCB components from ultrasonic guided wave signals. The process is demonstrated on three different PCBs, each with five hotspot positions (temperature controlled resistors). 
+This repository contains the raw data and associated python scripts to predict the temperature of PCB components from ultrasonic guided wave signals. The process is demonstrated on three different PCBs, each with five hotspot positions (temperature controlled resistors). Piezo Wafer Active Sensors (PWAS) are used to generate and detect transmitted signals.
+
+## Method
+
+An arbitrary waveform generator (GW Instek MFG-2230M) is used to generate a 300 kHz, five-cycle Hann windowed pulse, internally triggered at a rate of 100 ms. A Picoscope 3406D MSO USB oscilloscope is used to digitise the signals, at a sampling rate of 5 MHz. Signals are captured on a trigger from the excitation pulse, 200 μs with a 5% pre-trigger. A high-pass filter is used to remove any DC offset. The temperature of the components and the boards themselves are monitored using an infrared camera (Xinfrared T2S Plus), placing measurement points at the centre of each hotspot position.
+
+All data processing is carried out in python, as described below. 
 
 ## Setup the virtual environment in VSCode
 
