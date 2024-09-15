@@ -78,4 +78,4 @@ Processing stages of `process_data.py`:
 
 ## Results
 
-Overall, `ExtraTreesRegressor' is the best performing regression model on all three PCBs, achieving an average RMSE of <3.5◦C, and an $R^2$ of ≥0.95. This is based on the use of the 20 most important features, as determined by mutual information score.
+Overall, `ExtraTreesRegressor' is the best performing regression model on all three PCBs, achieving an average RMSE of <3.5◦C, and an $R^2$ of ≥0.95. This is based on the use of the 20 most important features, as determined by mutual information score. The simultaneous temperature monitoring of five PCB components has been achieved with a limited number of ultrasonic guided wave sensors.
