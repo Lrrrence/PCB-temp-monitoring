@@ -28,7 +28,7 @@ A large number of features (103) are calculated from each signal, which can be s
     - Two receivers, five hotspots applied externally via resistors to board ICs.
     - One dataset, `single`. 2002 samples.
 
-All data processing is carried out in python, as described below. The [sci-kit learn package](https://scikit-learn.org/stable/index.html) is used for feature selection, model training, and evaluation. A range of regression models are trained and ranked based on root mean squared error (RMSE) and R$^2$. 
+All data processing is carried out in python, as described below. The [sci-kit learn package](https://scikit-learn.org/stable/index.html) is used for feature selection, model training, and evaluation. A range of regression models are trained and ranked based on root mean squared error (RMSE) and $R^2$. 
 
 ## Setup the python virtual environment in VSCode
 
