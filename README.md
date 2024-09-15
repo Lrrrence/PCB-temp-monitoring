@@ -12,23 +12,10 @@ In all cases the voltage across each resistor (PCB#1/2: 0805 type (2012 metric),
 
 A large number of features (103) are calculated from each signal, which can be split into four sections, overall features, binned features, peak amplitudes, and peak frequency components. The overall features are made up of the mean, standard deviation, skewness, kurtosis, median, min, max, range, sum, and variance. These features are then calculated for different parts of the signal, after splitting into equally spaced bins (default 10). Finally, the envelope of the original signal is calculated, and the amplitude of the most prominent peaks (default 5) are measured. The frequency and magnitude of the most prominent peaks (default 5) are derived from FFT.
 
-All data processing is carried out in python, as described below. The [sci-kit learn package](https://scikit-learn.org/stable/index.html) is used for feature selection, model training, and evaluation. A range of regression models are trained and ranked based on root mean squared error (RMSE) and R$^2$. 
-
-## Setup the virtual environment in VSCode
-
-- install python 3.12
-- clone the repo and open the folder in VSCode
-- open a terminal window
-- create a virtual environment with: `py -3.12 -m venv .venv`
-- activate it with: `.venv/scripts/activate`
-- install the required packages with: `pip install -r requirements.txt`
-
-## Processing
-
-The first stage of the processing (`process_data.py`) takes the raw data ("Waveforms" folder), combines it with IR camera (Xinfrared T2S Plus) measurements for model training/validation, and then generates a selection of features from the receiver waveforms. These features are then stored in a `.csv` file, to be passed to the ML stage.
+**There are three test PCBs:**
 
 <img src="Data/PCB%231/PCB1_edit.png" width="30%"> <img src="Data/PCB%232/PCB2_edit.png" width="30%"></img> <img src="Data/PCB%233/PCB3_edit.png" width="30%"></img>
-There are three test PCBs:
+
 - PCB#1
     - One receiver, five spread out resistor hotspots.
     - Two datasets, `single` and `avg`.
@@ -41,9 +28,24 @@ There are three test PCBs:
     - Two receivers, five hotspots applied externally via resistors to board ICs.
     - One dataset, `single`. 2002 samples.
 
-The function for reading in signals is changed automatically, depending on the type. `func_read_signals` or `func_read_signals_average`. 
+All data processing is carried out in python, as described below. The [sci-kit learn package](https://scikit-learn.org/stable/index.html) is used for feature selection, model training, and evaluation. A range of regression models are trained and ranked based on root mean squared error (RMSE) and R$^2$. 
 
-Within each data folder there is a `temp_log.txt` file which contains the temperature of each component (as measured by thermocouple or IR camera). This file is read in to `PCB_ML_main.py` and used at around line 74, where the closest measurement by timestamp from `temp_log.txt` is matched up and stored with the signal data. Temp 1-5 are the component temperatures, temp 6 is the minimum temperature of the board (not used).
+## Setup the python virtual environment in VSCode
+
+- install python 3.12
+- clone the repo and open the folder in VSCode
+- open a terminal window
+- create a virtual environment with: `py -3.12 -m venv .venv`
+- activate it with: `.venv/scripts/activate`
+- install the required packages with: `pip install -r requirements.txt`
+
+## Processing
+
+The first stage of the processing (`process_data.py`) takes the raw data ("Waveforms" folder), combines it with IR camera (Xinfrared T2S Plus) measurements for model training/validation, and then generates a selection of features from the receiver waveforms. These features are then stored in a `.csv` file, to be passed to the ML stage. The `test_processing.py` script can be used to understand how the features are calculated on a single sample.
+
+The function for reading in signals is changed automatically, depending on the type. `func_read_signals` or `func_read_signals_average`. The average version takes a mean average of the 64 signals within each buffer capture folder (present for PCB#1 & #2), resulting in significantly less data than the `single` method. Note that for PCB#1 the datasets are unique for each method.
+
+Within each data folder there is a `temp_log.txt` file which contains the temperature of each component, as measured by IR camera. This file is read in to `process_data.py` and used at line 85, where the closest measurement by timestamp from `temp_log.txt` is matched up and stored with the signal data. Temp 1-5 are the component temperatures, temp 6 is the minimum temperature of the board (not used).
 
 Processing stages of `process_data.py`:
 1. Import dependencies and set file paths.
