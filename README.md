@@ -41,7 +41,7 @@ All data processing is carried out in python, as described below. The [sci-kit l
 
 ## Processing
 
-The first stage of the processing (`process_data.py`) takes the raw data ("Waveforms" folder), combines it with IR camera (Xinfrared T2S Plus) measurements for model training/validation, and then generates a selection of features from the receiver waveforms. These features are then stored in a `.csv` file, to be passed to the ML stage. The `test_processing.py` script can be used to understand how the features are calculated on a single sample.
+The first stage of the processing (`process_data.py`) takes the raw data ("Waveforms" folder), combines it with IR camera measurements for model training/validation, and then generates a selection of features from the receiver waveforms. These features are then stored in a `.csv` file, to be passed to the ML stage. The `test_processing.py` script can be used to understand how the features are calculated on a single sample.
 
 The function for reading in signals is changed automatically, depending on the type. `func_read_signals` or `func_read_signals_average`. The average version takes a mean average of the 64 signals within each buffer capture folder (present for PCB#1 & #2), resulting in significantly less data than the `single` method. Note that for PCB#1 the datasets are unique for each method.
 
@@ -78,4 +78,4 @@ Processing stages of `process_data.py`:
 
 ## Results
 
-Overall, `ExtraTreesRegressor' is the best performing regression model on all three PCBs, achieving an average RMSE of <3.5◦C, and an R2 of ≥0.95. This is based on the use of the 20 most important features, as determined by mutual information score.
+Overall, `ExtraTreesRegressor' is the best performing regression model on all three PCBs, achieving an average RMSE of <3.5◦C, and an $R^2$ of ≥0.95. This is based on the use of the 20 most important features, as determined by mutual information score.
