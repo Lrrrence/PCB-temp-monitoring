@@ -5,15 +5,15 @@ Created on Wed Jun 26 12:00:19 2024
 @author: Lrrr
 """
 
+#%% load features from file
+
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import os
 
-#%% load features from file
-
 # Define the folder path where the file is located
-folder_path = os.path.join(os.path.dirname(__file__), "Data", "PCB#1", "single")
+folder_path = os.path.join(os.path.dirname(__file__), "Data", "PCB#3", "single")
 
 # Find any file that has 'features.csv' in the name in the specified folder
 for file in os.listdir(folder_path):
