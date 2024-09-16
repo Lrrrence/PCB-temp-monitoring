@@ -66,9 +66,9 @@ Processing stages of `process_data.py`:
    peaks are found, bins are split, and FFT is calculated on a single
    file, outside of the function. 
 - `regression_multi.py` to compare
-   regression models and find the most effective.
+   regression models and find the most effective. The best 20 features as determined by mutual information score at the first hotspot position ('temp 1') are used to train the model: `SelectKBest(score_func=mutual_info_regression, k=20)`. A selection of models are contained within `reg_models`, adjust as required. k-fold cross-validation is used (k=5) to evaluate the performance of the models, where the average/st.dev of RMSE and $R^2$ are stored in `reg_results.xlsx`. 
 - `regression_ExtraTrees.py` trains a single model
-   (ExtraTreesRegressor). 
+   (ExtraTreesRegressor). Mirrors the config of `regression_multi.py`.
 - `func_read_signals.py` contains the functions
    that read either buffered (`read_signals_avg`) or single (`read_signals_single`) waveforms.
 - `func_calc_features.py` contains the function `calculate_features` that generates
